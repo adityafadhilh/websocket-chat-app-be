@@ -12,6 +12,8 @@ mongoose.connect(process.env.DATABASE_URL)
 
 mongoose.Promise = global.Promise;
 
-export const User = UserModel;
-export const Chat = ChatModel;
+export {
+    UserModel as User,
+    ChatModel as Chat
+};
 
