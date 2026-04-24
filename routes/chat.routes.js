@@ -17,8 +17,10 @@ chatRoutes.post('/', async (req, res) => {
         members
     } = req.body;
     console.log(members);
-    const chatRes = createChat(members);
-    console.log(res);
+    const chatRes = createChat({
+        members
+    });
+    console.log(chatRes);
     return res.send({
         message: "Succesfully created chat"
     });

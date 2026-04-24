@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const ChatSchema = new mongoose.Schema({
     members: [{
-        type: String
+        type: String,
+        unique: true
     }],
     history: [{
         to: {

@@ -6,7 +6,7 @@ import cors from "cors";
 // import bodyParser from "body-parser";
 import { userRoutes } from "./routes/user.routes.js";
 import { chatRoutes } from "./routes/chat.routes.js";
-import { createChat, findChat } from "./services/chat.services.js";
+import { createChat, findChat, findChatByMembers, updateChat } from "./services/chat.services.js";
 
 const app = express();
 const server = createServer(app);
@@ -30,26 +30,38 @@ io.on('connection', async (socket) => {
     const {
         userId,
         recipientId,
-        chatId
     } = socket.handshake.query;
 
-    const findOneChat = indChat(chatId);
+    console.log('query: ' + JSON.stringify(socket.handshake.query));
 
-    if (findOneChat) {
-        // socket.join(findOneChat.id);
+    const findOneChat = await findChatByMembers([userId, recipientId]);
+
+    console.log('findOneChat: ' + findOneChat);
+
+    let chatId = ''
+
+    if (findOneChat.length > 0) {
+        console.log('findOneChat');
+        chatId = findOneChat[0]._id.toString();
+        console.log(chatId);
+        socket.join(chatId);
+    } else {
+        console.log('here');
+        // console.log('here');
+        const chat = await createChat({
+            members: [userId, recipientId],
+        });
+        console.log('chatId: ' + chat._id);
+        chatId = chat._id.toString();
+        socket.join(chatId);
     }
 
-    socket.on('chat message', (data) => {
-        if (findOneChat) {
-            socket.to(findOneChat.id).emit()
-        } else {
-            const chat = createChat({
-                members: [data.from, data.to],
-                history: data.history
-            });
-            const chatId = chat._id.toString();
-            socket.to(chatId).emit(data);
-        }
+    socket.on('chat message', async (history) => {
+        console.log('history: ' + JSON.stringify(history));
+        const updatedChat = await updateChat(chatId, history);
+        console.log('updatedChat: ' + updatedChat);
+        // console.log(updatedChat);
+        socket.to(chatId).emit(history)
     });
 
     socket.on('disconnect', () => {
