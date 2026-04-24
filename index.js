@@ -27,14 +27,19 @@ app.get('/', (req, res) => {
 
 io.on('connection', async (socket) => {
     console.log("User Connected");
-    const {
-        userId,
-        recipientId,
-    } = socket.handshake.query;
+    // const {
+    //     userId,
+    //     recipientId,
+    // } = socket.handshake.query;
+
+    const members = socket.handshake.query.members.split(',');
 
     console.log('query: ' + JSON.stringify(socket.handshake.query));
 
-    const findOneChat = await findChatByMembers([userId, recipientId]);
+    console.log('members: ' + JSON.stringify(members));
+
+    // const findOneChat = await findChatByMembers([userId, recipientId]);
+    const findOneChat = await findChatByMembers(members);
 
     console.log('findOneChat: ' + findOneChat);
 
@@ -49,7 +54,7 @@ io.on('connection', async (socket) => {
         console.log('here');
         // console.log('here');
         const chat = await createChat({
-            members: [userId, recipientId],
+            members
         });
         console.log('chatId: ' + chat._id);
         chatId = chat._id.toString();
