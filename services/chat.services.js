@@ -16,6 +16,28 @@ const create = async (body) => {
     }
 };
 
+const findAll = async () => {
+    try {
+        const res = await Chat.find();
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const findAllByUserId = async (userId) => {
+    try {
+        const res = await Chat.find({
+            members: userId
+        }).sort({
+            updatedAt: -1
+        });
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const find = async (chatId) => {
     try {
         const res = await Chat.findById(chatId);
@@ -59,6 +81,8 @@ const update = async (chatId, history) => {
 export {
     create as createChat,
     find as findChat,
+    findAll as findAllChats,
     findByMembers as findChatByMembers,
-    update as updateChat
+    update as updateChat,
+    findAllByUserId as findChatsByUserId
 };

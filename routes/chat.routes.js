@@ -3,14 +3,19 @@ import {
     createChat,
     findChat
 } from '../services/chat.services.js';
+import {
+    getChats,
+    getChatsByUserId,
+    getChatByChatId
+} from '../controllers/chat.controller.js';
 
 export const chatRoutes = Router();
 
-chatRoutes.get('/', (req, res) => {
-    return res.send({
-        message: 'Chat'
-    });
-});
+chatRoutes.get('/', getChats);
+
+chatRoutes.get('/user/:userId', getChatsByUserId);
+
+chatRoutes.get('/:chatId', getChatByChatId);
 
 chatRoutes.post('/', async (req, res) => {
     const {
