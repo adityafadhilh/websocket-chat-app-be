@@ -1,9 +1,8 @@
 import { Router } from "express";
+import {
+    getAllUsers
+} from '../controllers/user.controllers.js';
 
 export const userRoutes = Router();
 
-userRoutes.get('/', (req, res) => {
-    return res.send({
-        message: 'User'
-    })
-});
+userRoutes.get('/', getAllUsers);

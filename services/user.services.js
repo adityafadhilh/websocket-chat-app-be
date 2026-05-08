@@ -1,15 +1,19 @@
-import {User} from '../helpers/db.js';
+import { User } from '../helpers/db.js';
 
-const create = () => {
+const createUser = () => {
 
 };
 
-const findAll = async () => {
-    const users = await User.find();
-    return users;
+const findAllUsers = async () => {
+    try {
+        const users = await User.find();
+        return users;
+    } catch (error) {
+        console.log(error);
+    }
 };
 
 export {
-    create,
-    findAll
+    createUser,
+    findAllUsers
 };
