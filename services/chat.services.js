@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { Chat } from "../helpers/db.js"
 
 const create = async (body) => {
@@ -27,12 +28,12 @@ const findAll = async () => {
 
 const findAllByUserId = async (userId) => {
     try {
-        const res = await Chat.find({
+        const chats = await Chat.find({
             members: userId
         }).sort({
             updatedAt: -1
         });
-        return res;
+        return chats;
     } catch (error) {
         console.log(error);
     }

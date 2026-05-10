@@ -19,7 +19,18 @@ const findAllFriends = async (userId) => {
         const users = await User.aggregate([
             {
                 $match: {
-                    _id: userId
+                    _id: new mongoose.Types.ObjectId(userId)
+                }
+            },
+            {
+                $addFields: {
+                    friends_id: {
+                        $map: {
+                            input: "$friends_id",
+                            as: "fid",
+                            in: { $toObjectId: "$$fid" }
+                        }
+                    }
                 }
             },
             {
@@ -31,7 +42,8 @@ const findAllFriends = async (userId) => {
                 }
             }
         ]);
-        return users;
+        console.log(users);
+        return users[0];
     } catch (error) {
         console.log(error);
     }
