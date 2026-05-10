@@ -8,6 +8,9 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
     },
+    friends_id: {
+        type: [String]
+    },
     online: {
         type: Boolean,
         default: false
