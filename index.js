@@ -66,7 +66,7 @@ io.on('connection', async (socket) => {
         const updatedChat = await updateChat(chatId, history);
         console.log('updatedChat: ' + updatedChat);
         // console.log(updatedChat);
-        socket.to(chatId).emit(history)
+        io.to(chatId).emit('chat message', history);
     });
 
     socket.on('disconnect', () => {
