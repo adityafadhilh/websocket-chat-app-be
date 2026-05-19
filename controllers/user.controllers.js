@@ -1,6 +1,7 @@
 import {
     findAllFriends,
-    findAllUsers
+    findAllUsers,
+    updateStatus
 } from '../services/user.services.js';
 
 export const getAllUsers = async (req, res) => {
@@ -29,3 +30,19 @@ export const getAllFriends = async (req, res) => {
         });
     }
 }
+
+export const updateUserStatus = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const body = req.body;
+        const user = await updateStatus(userId, body.status);
+        console.log(user);
+        return res.json({
+            user
+        });
+    } catch (error) {
+         return res.error(400).json({
+            message: error.message || "An unknown error occurred"
+        });
+    }
+};

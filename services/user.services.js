@@ -14,6 +14,21 @@ const findAllUsers = async () => {
     }
 };
 
+const updateStatus = async (userId, status) => {
+    try {
+        const updateRes = await User.findByIdAndUpdate(userId, {
+            $set: {
+                online: status
+            },
+        }, {
+            new: true
+        });
+        return updateRes;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 const findAllFriends = async (userId) => {
     try {
         const users = await User.aggregate([
@@ -52,5 +67,6 @@ const findAllFriends = async (userId) => {
 export {
     createUser,
     findAllUsers,
-    findAllFriends
+    findAllFriends,
+    updateStatus
 };
