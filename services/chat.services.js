@@ -29,7 +29,10 @@ const findAll = async () => {
 const findAllByUserId = async (userId) => {
     try {
         const chats = await Chat.find({
-            members: userId
+            members: userId,
+            'history.0': {
+                $exists: true
+            }
         }).sort({
             updatedAt: -1
         });
@@ -50,12 +53,13 @@ const find = async (chatId) => {
 
 const findByMembers = async (membersArr) => {
     try {
+        console.log('members: ' + membersArr);
         const res = await Chat.find({
             members: {
                 $all: membersArr
             }
         });
-        console.log(res);
+        console.log('findChatByMembers: ' + JSON.stringify(res));
         return res;
     } catch (error) {
         console.log(error);

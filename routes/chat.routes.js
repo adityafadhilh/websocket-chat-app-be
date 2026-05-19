@@ -6,7 +6,8 @@ import {
 import {
     getChats,
     getChatsByUserId,
-    getChatByChatId
+    getChatByChatId,
+    getChatByMembers
 } from '../controllers/chat.controller.js';
 
 export const chatRoutes = Router();
@@ -29,4 +30,6 @@ chatRoutes.post('/', async (req, res) => {
     return res.send({
         message: "Succesfully created chat"
     });
-})
+});
+
+chatRoutes.post('/by/members', getChatByMembers);

@@ -47,4 +47,23 @@ export const getChatByChatId = async (req, res) => {
              message: error.message || "An unknown error occurred"
         })
     }
+};
+
+export const getChatByMembers = async (req, res) => {
+    try {
+        console.log('-------------------------');
+        console.log('getChatByMembers: ' + req.body);
+        const {members} = req.body;
+        console.log(req.body);
+        console.log('getChatByMembers: ' + members);
+        const result = await findChatByMembers(members);
+        console.log(result);
+        return res.json({
+            chat: result
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message || "An unknown error occurred"
+        })
+    }
 }

@@ -36,7 +36,6 @@ export const updateUserStatus = async (req, res) => {
         const { userId } = req.params;
         const body = req.body;
         const user = await updateStatus(userId, body.status);
-        console.log(user);
         return res.json({
             user
         });

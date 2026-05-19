@@ -7,6 +7,7 @@ import cors from "cors";
 import { userRoutes } from "./routes/user.routes.js";
 import { chatRoutes } from "./routes/chat.routes.js";
 import { createChat, findChat, findChatByMembers, updateChat } from "./services/chat.services.js";
+import { updateStatus } from "./services/user.services.js";
 
 const app = express();
 const server = createServer(app);
@@ -32,11 +33,16 @@ io.on('connection', async (socket) => {
     //     recipientId,
     // } = socket.handshake.query;
 
+    const currentUserId = socket.handshake.query.current;
     const members = socket.handshake.query.members.split(',');
 
     console.log('query: ' + JSON.stringify(socket.handshake.query));
 
     console.log('members: ' + JSON.stringify(members));
+
+    console.log('currentId: ' + JSON.stringify(currentUserId));
+
+    await updateStatus(currentUserId, true);
 
     // const findOneChat = await findChatByMembers([userId, recipientId]);
     const findOneChat = await findChatByMembers(members);
@@ -69,7 +75,8 @@ io.on('connection', async (socket) => {
         io.to(chatId).emit('chat message', history);
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', async () => {
+        await updateStatus(currentUserId, false);
         console.log("User Disconnected");
     });
 });

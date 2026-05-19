@@ -21,8 +21,9 @@ const updateStatus = async (userId, status) => {
                 online: status
             },
         }, {
-            new: true
+            returnDocument: 'after'
         });
+        console.log(updateRes);
         return updateRes;
     } catch (error) {
         console.log(error);
@@ -57,8 +58,8 @@ const findAllFriends = async (userId) => {
                 }
             }
         ]);
-        console.log(users);
-        return users[0];
+        // console.log('findAllFriends: ' + JSON.stringify(users));
+        return users[0].friends_details;
     } catch (error) {
         console.log(error);
     }
